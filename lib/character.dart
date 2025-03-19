@@ -6,6 +6,8 @@ import 'package:rpg_app/monster.dart';
 class Character {
   static const double ITEM_DROP_PROBABILITY = 0.8;
   static const double BONUS_HP_PROBABILITY = 0.3;
+  static const double RUN_PROBABILITY = 0.2;
+
   static const int BONUS_HP = 10;
   static const int ITEM_DEFENSE = 20;
 
@@ -53,6 +55,12 @@ class Character {
     currentDefense = defense;
     usingPowerItem = false;
     print('$name의 방어력이 $defense만큼 증가했습니다.');
+  }
+
+  /* 도망가기 */
+  bool didRunAway() {
+    Random random = Random();
+    return random.nextDouble() < RUN_PROBABILITY ? true : false;
   }
 
   /* 몬스터와의 대결에서 이길 시 특정 확률로 아이템 습득 */

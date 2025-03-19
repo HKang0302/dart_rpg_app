@@ -100,10 +100,11 @@ class Game {
     // 배틀 전 캐릭터 옵션 초기화
     character.init4Battle();
     int round = 0;
+    bool done = false;
 
     while (character.hp > 0 && monster.hp > 0) {
       print('\n${character.name}의 턴');
-      stdout.write('행동을 선택하세요. (1: 공격, 2: 방어, 3: 아이템 사용)');
+      stdout.write('행동을 선택하세요. (1: 공격, 2: 방어, 3: 아이템 사용, 0: 도망가기): ');
       String action = stdin.readLineSync() ?? '';
       switch (action) {
         case '1':
@@ -115,10 +116,21 @@ class Game {
         case '3':
           character.useItem();
           break;
+        case '0':
+          if (character.didRunAway()) {
+            print('${monster.name}으로부터 도망쳤습니다.');
+            done = true;
+            break;
+          } else {
+            print('도망치지 못했습니다.');
+          }
+          break;
         default:
           print('잘못된 입력입니다.');
           break;
       }
+
+      if (done) return true;
 
       if (action != '3' && monster.hp > 0) {
         round += 1;
