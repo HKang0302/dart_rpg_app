@@ -10,16 +10,25 @@ class Character {
 
   static const int BONUS_HP = 10;
   static const int ITEM_DEFENSE = 20;
+  static const int SHIELD_DEFENSE = 10;
+
+  static const int POWER_ITEM = 1;
+  static const int DEFENSE_ITEM = 2;
+  static const int SHEILD = 3;
+  static const List<int> DROPS = [POWER_ITEM, DEFENSE_ITEM, SHEILD];
 
   String name;
   int hp;
   int power;
-  int defense;
-  int currentDefense = 0;
+  int defense; // 기본 방어력
+  int shield = 0; // 장비에 의한 방어력 증가
 
   int numPowerItems = 0;
   int numDefenseItems = 0;
+
+  bool defending = false;
   bool usingPowerItem = false;
+  bool usingDefendItem = false;
 
   Character({
     required this.name,
@@ -29,7 +38,9 @@ class Character {
   });
 
   void init4Battle() {
+    defending = false;
     usingPowerItem = false;
+    usingDefendItem = false;
   }
 
   void getBonusHP() {
@@ -44,7 +55,7 @@ class Character {
   void attackMonster(Monster monster) {
     int tempPower = usingPowerItem ? power * 2 : power;
     monster.hp -= tempPower;
-    usingPowerItem = false;
+    init4Battle();
     print('${name}이(가) ${monster.name}에게 ${tempPower}의 데미지를 입혔습니다.');
     showStatus();
     monster.showStatus();
@@ -52,9 +63,8 @@ class Character {
 
   /* 캐릭터의 방어력만큼의 방어력 증가 */
   void defend() {
-    currentDefense = defense;
-    usingPowerItem = false;
-    print('$name의 방어력이 $defense만큼 증가했습니다.');
+    defending = true;
+    print('$name의 방어력이 $shield만큼 증가했습니다.');
   }
 
   /* 도망가기 */
@@ -67,12 +77,23 @@ class Character {
   void getRandomItem() {
     Random random = Random();
     if (random.nextDouble() < ITEM_DROP_PROBABILITY) {
-      if (random.nextBool()) {
-        numDefenseItems += 1;
-        print('방어 아이템을 얻었습니다!');
-      } else {
-        numPowerItems += 1;
-        print('공격 아이템을 얻었습니다!');
+      int randomItem = DROPS[random.nextInt(DROPS.length)];
+      switch (randomItem) {
+        case POWER_ITEM:
+          numPowerItems += 1;
+          print('공격 아이템을 얻었습니다!');
+          break;
+        case DEFENSE_ITEM:
+          numDefenseItems += 1;
+          print('방어 아이템을 얻었습니다!');
+          break;
+        case SHEILD:
+          shield += SHIELD_DEFENSE;
+          print('방패를 주웠습니다. 방패의 방어력이 ${SHIELD_DEFENSE}만큼 증가합니다.');
+          print('방어 시, ${shield}만큼 방어');
+          break;
+        default:
+          break;
       }
     }
   }
@@ -96,8 +117,8 @@ class Character {
           break;
         case '2':
           if (numDefenseItems > 0) {
-            print('방어력이 ${ITEM_DEFENSE} 증가합니다.');
-            currentDefense += ITEM_DEFENSE;
+            print('방어력이 ${ITEM_DEFENSE}만큼 증가합니다.');
+            usingDefendItem = true;
             numDefenseItems -= 1;
           } else {
             throw '방어 아이템이 없습니다.';
@@ -115,7 +136,7 @@ class Character {
 
   void showStatus() {
     print(
-      '$name - 체력: $hp, 공격력: $power, 방어력: $currentDefense (방어 시, 방어력 ${defense}만큼 증가)',
+      '$name - 체력: $hp, 공격력: $power, 방어력: $defense (방어 시, ${shield}만큼 방어력 증가)',
     );
   }
 }

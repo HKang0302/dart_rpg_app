@@ -11,7 +11,11 @@ class Monster {
   /* power만큼 캐릭터 공격 */
   void attackCharacter(Character character) {
     // 방어력이 있으면 방어력만큼 데미지 감소
-    int damage = power - character.currentDefense;
+    int damage =
+        power -
+        (character.defense +
+            character.shield +
+            (character.usingDefendItem ? Character.ITEM_DEFENSE : 0));
     if (damage < 0) {
       damage = 0;
     }
@@ -23,6 +27,7 @@ class Monster {
     print('${name}이(가) ${character.name}에게 ${power}의 데미지를 입혔습니다.');
     print('${character.name}의 방어력으로 인해 ${damage}의 피해를 입었습니다.');
 
+    character.init4Battle();
     showStatus();
     character.showStatus();
   }
