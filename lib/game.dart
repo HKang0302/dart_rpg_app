@@ -25,8 +25,12 @@ class Game {
       try {
         isValid = isCharacterNameValid(name);
         if (isValid) {
-          character = createCharacter(name);
-          print('게임을 시작합니다!');
+          character =
+              createCharacter(name) ??
+              (() {
+                print('캐릭터 생성에 실패했습니다. 게임을 종료합니다.');
+                exit(0);
+              })();
           character.showStatus();
           break;
         }
@@ -38,43 +42,52 @@ class Game {
     loadMonsterFile();
   }
 
-  Character createCharacter(String name) {
+  Character? createCharacter(String name) {
     try {
       final file = File('lib/files/characters.txt');
+      if (!file.existsSync()) {
+        // 파일 존재하지 않는 경우 게임 종료 (return null)
+        throw '캐릭터 데이터 파일이 없습니다. 파일 확인 후 다시 시작해주세요.';
+      }
+
       final contents = file.readAsStringSync();
       final stats = contents.split(',');
-      if (stats.length != 3) throw FormatException('Invalid character data');
+      if (stats.length != 3) throw '캐릭터 정보가 올바르지 않습니다.';
 
-      int hp = int.parse(stats[0]);
-      int power = int.parse(stats[1]);
-      int defense = int.parse(stats[2]);
+      int hp = int.tryParse(stats[0]) ?? 50;
+      int power = int.tryParse(stats[1]) ?? 10;
+      int defense = int.tryParse(stats[2]) ?? 0;
 
       return Character(name: name, hp: hp, power: power, defense: defense);
     } catch (e) {
-      print('캐릭터 생성에 실패했습니다. 다시 이름을 입력해주세요.');
-      String newName = stdin.readLineSync() ?? '';
-      return createCharacter(newName);
+      print(e.toString());
+      return null;
     }
   }
 
   void loadMonsterFile() {
     try {
       final file = File('lib/files/monsters.txt');
+      if (!file.existsSync()) {
+        throw '몬스터 데이터 파일이 없습니다. 파일 확인 후 다시 시작해주세요.';
+      }
       final contents = file.readAsStringSync();
       final monsters = contents.split('\n');
       monsters.forEach((monster) {
         final stats = monster.split(',');
-        if (stats.length != 3) throw FormatException('Invalid moster data');
+        if (stats.length != 3) throw '몬스터 정보가 올바르지 않습니다.';
         this.monsters.add(
           Monster(
             name: stats[0],
-            hp: int.parse(stats[1]),
-            power: int.parse(stats[2]),
+            hp: int.tryParse(stats[1]) ?? 50,
+            power: int.tryParse(stats[2]) ?? 10,
           ),
         );
       });
     } catch (e) {
-      print('몬스터 데이터를 불러오는데 실패했습니다.');
+      print(e.toString());
+      print('몬스터 데이터를 불러오는 중 오류가 발생했습니다. 게임을 종료합니다.');
+      exit(0);
     }
   }
 
