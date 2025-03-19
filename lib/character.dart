@@ -1,6 +1,11 @@
+import 'dart:math';
+
 import 'package:rpg_app/monster.dart';
 
 class Character {
+  static const double BONUS_HP_PROBABILITY = 0.3;
+  static const int BONUS_HP = 10;
+
   String name;
   int hp;
   int power;
@@ -13,6 +18,14 @@ class Character {
     required this.power,
     required this.defense,
   });
+
+  void getBonusHP() {
+    Random random = Random();
+    if (random.nextDouble() < BONUS_HP_PROBABILITY) {
+      hp += BONUS_HP;
+      print('\n보너스 체력을 얻었습니다! 현재 체력: ${hp}');
+    }
+  }
 
   /* 몬스터에게 캐릭터의 공격력만큼의 데미지 */
   void attackMonster(Monster monster) {

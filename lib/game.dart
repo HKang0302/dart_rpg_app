@@ -31,6 +31,7 @@ class Game {
                 print('캐릭터 생성에 실패했습니다. 게임을 종료합니다.');
                 exit(0);
               })();
+          character.getBonusHP();
           character.showStatus();
           break;
         }
