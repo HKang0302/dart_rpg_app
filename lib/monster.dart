@@ -31,8 +31,8 @@ class Monster {
       character.hp = 0;
     }
 
-    print('${name}이(가) ${character.name}에게 ${power}의 데미지를 입혔습니다.');
-    print('${character.name}의 방어력으로 인해 ${damage}의 피해를 입었습니다.');
+    print('$name이(가) ${character.name}에게 $power의 데미지를 입혔습니다.');
+    print('${character.name}의 방어력으로 인해 $damage의 피해를 입었습니다.');
 
     character.init4Battle();
     showStatus();
@@ -47,6 +47,6 @@ class Monster {
 
   /* 몬스터 상태 출력 */
   void showStatus() {
-    print('$name - 체력: $hp, 공격력: $power');
+    print('$name - 체력: $hp, 공격력: $power, 방어력: $defense');
   }
 }

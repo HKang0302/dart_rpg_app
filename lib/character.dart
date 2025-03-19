@@ -68,9 +68,13 @@ class Character {
   /* 몬스터에게 캐릭터의 공격력만큼의 데미지 */
   void attackMonster(Monster monster) {
     int tempPower = usingPowerItem ? power * 2 : power;
-    monster.hp -= tempPower;
+    int damage = tempPower - monster.defense;
+    monster.hp -= damage;
     init4Battle();
-    print('${name}이(가) ${monster.name}에게 ${tempPower}의 데미지를 입혔습니다.');
+    print('$name이(가) ${monster.name}에게 $tempPower의 데미지를 입혔습니다.');
+    if (monster.defense > 0) {
+      print('${monster.name}의 방어력으로 인해 $damage의 피해를 입었습니다.');
+    }
     showStatus();
     monster.showStatus();
   }
