@@ -97,21 +97,42 @@ class Game {
     print('\n새로운 몬스터가 나타났습니다!');
     monster.showStatus();
 
+    // 배틀 전 캐릭터 옵션 초기화
+    character.init4Battle();
+    int round = 0;
+
     while (character.hp > 0 && monster.hp > 0) {
       print('\n${character.name}의 턴');
-      stdout.write('행동을 선택하세요. (1: 공격, 2: 방어): ');
+      stdout.write(
+        '행동을 선택하세요. (1: 공격, 2: 방어${character.hasItem ? ', 3: 아이템 사용' : ''}): ',
+      );
       String action = stdin.readLineSync() ?? '';
-      if (action == '1') {
-        character.attackMonster(monster);
-      } else if (action == '2') {
-        character.defend();
-      } else {
-        print('잘못된 입력입니다.');
+      switch (action) {
+        case '1':
+          character.attackMonster(monster);
+          break;
+        case '2':
+          character.defend();
+          break;
+        case '3':
+          if (character.hasItem) {
+            character.useItem();
+          } else {
+            print('잘못된 입력입니다.');
+          }
+          break;
+        default:
+          print('잘못된 입력입니다.');
+          break;
       }
 
-      if (monster.hp > 0) {
+      if (action != '3' && monster.hp > 0) {
+        round += 1;
         print('\n${monster.name}의 턴');
         monster.attackCharacter(character);
+        if (round % 3 == 0) {
+          monster.increaseDefense();
+        }
       }
     }
 

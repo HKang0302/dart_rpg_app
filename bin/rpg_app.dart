@@ -10,10 +10,15 @@ void main(List<String> arguments) {
     if (!game.battle()) {
       break;
     } // battle
-    stdout.write("\n다음 몬스터와 대결하시겠습니까? (y/n)");
-    String answer = stdin.readLineSync() ?? '';
-    if (answer != 'y') {
-      isRunning = false;
+
+    if (game.killedMonster == game.monsters.length) {
+      print('모든 몬스터를 물리쳤습니다! YAY!!');
+    } else {
+      stdout.write("\n다음 몬스터와 대결하시겠습니까? (y/n)");
+      String answer = stdin.readLineSync() ?? '';
+      if (answer != 'y') {
+        isRunning = false;
+      }
     }
   }
 

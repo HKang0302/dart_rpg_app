@@ -12,12 +12,20 @@ class Character {
   int defense;
   int currentDefense = 0;
 
+  bool hasItem = true;
+  bool usingPowerItem = false;
+
   Character({
     required this.name,
     required this.hp,
     required this.power,
     required this.defense,
   });
+
+  void init4Battle() {
+    hasItem = true;
+    usingPowerItem = false;
+  }
 
   void getBonusHP() {
     Random random = Random();
@@ -29,8 +37,10 @@ class Character {
 
   /* 몬스터에게 캐릭터의 공격력만큼의 데미지 */
   void attackMonster(Monster monster) {
-    monster.hp -= power; // TODO: 몬스터 방어력만큼 데미지 감소 (power - monster.defense)
-    print('${name}이(가) ${monster.name}에게 ${power}의 데미지를 입혔습니다.');
+    int tempPower = usingPowerItem ? power * 2 : power;
+    monster.hp -= tempPower;
+    usingPowerItem = false;
+    print('${name}이(가) ${monster.name}에게 ${tempPower}의 데미지를 입혔습니다.');
     showStatus();
     monster.showStatus();
   }
@@ -38,7 +48,19 @@ class Character {
   /* 캐릭터의 방어력만큼의 방어력 증가 */
   void defend() {
     currentDefense = defense;
+    usingPowerItem = false;
     print('$name의 방어력이 $defense만큼 증가했습니다.');
+  }
+
+  /* 아이템 사용 */
+  void useItem() {
+    if (hasItem) {
+      hasItem = false;
+      usingPowerItem = true;
+      print('아이템을 사용했습니다. 공격력이 2배 증가합니다.');
+    } else {
+      print('이미 아이템을 사용했습니다.');
+    }
   }
 
   void showStatus() {

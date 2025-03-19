@@ -27,6 +27,11 @@ class Monster {
     character.showStatus();
   }
 
+  void increaseDefense() {
+    defense += 2;
+    print('${name}의 방어력이 증가했습니다. 현재 방어력: $defense');
+  }
+
   void showStatus() {
     print('$name - 체력: $hp, 공격력: $power');
   }
