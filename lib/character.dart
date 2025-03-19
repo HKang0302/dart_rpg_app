@@ -3,19 +3,31 @@ import 'dart:io';
 
 import 'package:rpg_app/monster.dart';
 
+/* 
+  캐릭터 클래스
+  - 캐릭터 이름, 체력, 공격력, 방어력 정보를 가지고 있음
+  - 캐릭터의 상태를 출력하는 메서드를 가지고 있음
+  - 캐릭터의 공격력을 증가시키는 메서드를 가지고 있음
+  - 캐릭터의 방어력을 증가시키는 메서드를 가지고 있음
+  - 캐릭터의 방어력을 증가시키는 메서드를 가지고 있음
+*/
 class Character {
-  static const double ITEM_DROP_PROBABILITY = 0.8;
-  static const double BONUS_HP_PROBABILITY = 0.3;
-  static const double RUN_PROBABILITY = 0.2;
+  static const double ITEM_DROP_PROBABILITY = 0.8; // 아이템 드롭 확률
+  static const double BONUS_HP_PROBABILITY = 0.3; // 보너스 체력 확률
+  static const double RUN_PROBABILITY = 0.2; // 도망가기 확률
 
-  static const int BONUS_HP = 10;
-  static const int ITEM_DEFENSE = 20;
-  static const int SHIELD_DEFENSE = 10;
+  static const int BONUS_HP = 10; // 보너스 체력
+  static const int ITEM_DEFENSE = 20; // 아이템 방어력
+  static const int SHIELD_DEFENSE = 10; // 방패 방어력
 
-  static const int POWER_ITEM = 1;
-  static const int DEFENSE_ITEM = 2;
-  static const int SHEILD = 3;
-  static const List<int> DROPS = [POWER_ITEM, DEFENSE_ITEM, SHEILD];
+  static const int POWER_ITEM = 1; // 공격 아이템
+  static const int DEFENSE_ITEM = 2; // 방어 아이템
+  static const int SHEILD = 3; // 방패
+  static const List<int> DROPS = [
+    POWER_ITEM,
+    DEFENSE_ITEM,
+    SHEILD,
+  ]; // 아이템 드롭 목록
 
   String name;
   int hp;
@@ -26,9 +38,9 @@ class Character {
   int numPowerItems = 0;
   int numDefenseItems = 0;
 
-  bool defending = false;
-  bool usingPowerItem = false;
-  bool usingDefendItem = false;
+  bool defending = false; // 방어 상태
+  bool usingPowerItem = false; // 공격 아이템 사용 여부
+  bool usingDefendItem = false; // 방어 아이템 사용 여부
 
   Character({
     required this.name,
@@ -37,12 +49,14 @@ class Character {
     required this.defense,
   });
 
+  /* 몬스터와의 대결 준비 */
   void init4Battle() {
     defending = false;
     usingPowerItem = false;
     usingDefendItem = false;
   }
 
+  /* 보너스 체력 획득 */
   void getBonusHP() {
     Random random = Random();
     if (random.nextDouble() < BONUS_HP_PROBABILITY) {
@@ -134,6 +148,7 @@ class Character {
     }
   }
 
+  /* 캐릭터 상태 출력 */
   void showStatus() {
     print(
       '$name - 체력: $hp, 공격력: $power, 방어력: $defense (방어 시, ${shield}만큼 방어력 증가)',

@@ -1,5 +1,12 @@
 import 'package:rpg_app/character.dart';
 
+/* 
+  몬스터 클래스
+  - 몬스터 이름, 체력, 공격력, 방어력 정보를 가지고 있음
+  - 몬스터의 상태를 출력하는 메서드를 가지고 있음
+  - 몬스터의 공격력을 증가시키는 메서드를 가지고 있음
+  - 몬스터의 방어력을 증가시키는 메서드를 가지고 있음
+*/
 class Monster {
   String name;
   int hp;
@@ -32,11 +39,13 @@ class Monster {
     character.showStatus();
   }
 
+  /* 방어력 증가 */
   void increaseDefense() {
     defense += 2;
     print('${name}의 방어력이 증가했습니다. 현재 방어력: $defense');
   }
 
+  /* 몬스터 상태 출력 */
   void showStatus() {
     print('$name - 체력: $hp, 공격력: $power');
   }

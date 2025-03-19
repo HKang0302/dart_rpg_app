@@ -5,6 +5,12 @@ import 'package:rpg_app/character.dart';
 import 'package:rpg_app/monster.dart';
 import 'package:rpg_app/utils/validation.dart';
 
+/* 
+  게임 클래스
+  - 캐릭터와 몬스터의 대결을 관리
+  - 게임 결과를 저장
+  - 게임 결과를 출력
+*/
 class Game {
   late Character character;
   int killedMonster = 0;
@@ -43,6 +49,11 @@ class Game {
     loadMonsterFile();
   }
 
+  /* 
+    캐릭터 생성
+    - 캐릭터 이름, 체력, 공격력, 방어력 정보를 가지고 있는 캐릭터 객체 생성
+    - 캐릭터 데이터 파일이 없는 경우 게임 종료 (return null)
+  */
   Character? createCharacter(String name) {
     try {
       final file = File('lib/files/characters.txt');
@@ -66,6 +77,10 @@ class Game {
     }
   }
 
+  /* 
+    몬스터 데이터 파일 로드
+    - 몬스터 데이터 파일이 없는 경우 게임 종료
+  */
   void loadMonsterFile() {
     try {
       final file = File('lib/files/monsters.txt');
@@ -92,6 +107,10 @@ class Game {
     }
   }
 
+  /* 
+    몬스터와의 대결
+    - 몬스터와의 대결 결과 반환
+  */
   bool battle() {
     Monster monster = getRandomMonster();
     print('\n새로운 몬스터가 나타났습니다!');
@@ -155,12 +174,19 @@ class Game {
     }
   }
 
+  /* 
+    랜덤 몬스터 반환
+    - 몬스터 목록에서 랜덤 몬스터 반환
+  */
   Monster getRandomMonster() {
     final random = Random();
     final index = random.nextInt(monsters.length);
     return monsters[index];
   }
 
+  /* 
+    게임 결과 출력
+  */
   void showGameReault() {
     print('\n게임 결과');
     print(
@@ -168,6 +194,9 @@ class Game {
     );
   }
 
+  /* 
+    게임 결과 저장
+  */
   void saveResult(bool didDefeat) {
     final file = File('lib/files/result.txt');
     file.writeAsStringSync(
