@@ -118,4 +118,19 @@ class Game {
     final index = random.nextInt(monsters.length);
     return monsters[index];
   }
+
+  void showGameReault() {
+    print('\n게임 결과');
+    print(
+      '캐릭터: ${character.name} | 남은 체력: ${character.hp} | 물리친 몬스터 수: $killedMonster',
+    );
+  }
+
+  void saveResult(bool didDefeat) {
+    final file = File('lib/files/result.txt');
+    file.writeAsStringSync(
+      '${character.name}, ${character.hp}, $killedMonster, ${didDefeat ? '패배' : '승리'}',
+    );
+    print('게임 결과를 저장했습니다.');
+  }
 }

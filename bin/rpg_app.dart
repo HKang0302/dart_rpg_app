@@ -10,10 +10,19 @@ void main(List<String> arguments) {
     if (!game.battle()) {
       break;
     } // battle
-    print("\n다음 몬스터와 대결하시겠습니까? (y/n)");
+    stdout.write("\n다음 몬스터와 대결하시겠습니까? (y/n)");
     String answer = stdin.readLineSync() ?? '';
     if (answer != 'y') {
       isRunning = false;
     }
   }
+
+  game.showGameReault(); // game result
+  stdout.write('게임 결과를 저장하시겠습니까? (y/n)');
+  String answer = stdin.readLineSync() ?? '';
+  if (answer == 'y') {
+    game.saveResult(isRunning); // game result
+  }
+
+  print('게임을 종료합니다.');
 }
