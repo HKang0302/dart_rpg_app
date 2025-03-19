@@ -1,3 +1,5 @@
 Batman,30,20
 Spiderman,20,30
 Superman,30,10
+Lady Gaga,20,40
+Rose,50,5

@@ -103,9 +103,7 @@ class Game {
 
     while (character.hp > 0 && monster.hp > 0) {
       print('\n${character.name}의 턴');
-      stdout.write(
-        '행동을 선택하세요. (1: 공격, 2: 방어${character.hasItem ? ', 3: 아이템 사용' : ''}): ',
-      );
+      stdout.write('행동을 선택하세요. (1: 공격, 2: 방어, 3: 아이템 사용)');
       String action = stdin.readLineSync() ?? '';
       switch (action) {
         case '1':
@@ -115,11 +113,7 @@ class Game {
           character.defend();
           break;
         case '3':
-          if (character.hasItem) {
-            character.useItem();
-          } else {
-            print('잘못된 입력입니다.');
-          }
+          character.useItem();
           break;
         default:
           print('잘못된 입력입니다.');
@@ -143,6 +137,7 @@ class Game {
       print('${monster.name}을(를) 물리쳤습니다!');
       monsters.remove(monster);
       killedMonster++;
+      character.getRandomItem(); // 몬스터가 일정 확률로 아이템 drop
       character.showStatus();
       return true;
     }
